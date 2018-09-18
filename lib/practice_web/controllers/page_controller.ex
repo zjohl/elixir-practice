@@ -21,6 +21,9 @@ defmodule PracticeWeb.PageController do
     render conn, "factor.html", x: x, y: y
   end
 
-  # TODO: Add an action for palindrome.
+  def palindrome(conn, %{"s" => s}) do
+    pal = Practice.palindrome(s)
+    render conn, "palindrome.html", pal: pal
+  end
   # TODO: Add a template for palindrome over in lib/*_web/templates/page/??.html.eex
 end

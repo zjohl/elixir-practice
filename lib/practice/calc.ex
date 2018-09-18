@@ -5,6 +5,7 @@ defmodule Practice.Calc do
   end
 
   def calc(expr) do
+    # TODO Fix this func
     # This should handle +,-,*,/ with order of operations,
     # but doesn't need to handle parens.
     expr
