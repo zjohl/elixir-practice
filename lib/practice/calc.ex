@@ -58,34 +58,22 @@ defmodule Practice.Calc do
       {:num, n} ->
         n
       {:op, "+"} ->
-       eval([hd(tail)]) + eval(tl(tail))
+       eval(tl(tail)) + eval([hd(tail)])
       {:op, "-"} ->
-        eval([hd(tail)]) - eval(tl(tail))
+        eval(tl(tail)) - eval([hd(tail)])
       {:op, "*"} ->
-        eval([hd(tail)]) * eval(tl(tail))
+        eval(tl(tail)) * eval([hd(tail)])
       {:op, "/"} ->
-        eval([hd(tail)]) / eval(tl(tail))
+        eval(tl(tail)) / eval([hd(tail)])
     end
   end
 
   def calc(expr) do
-    # TODO Fix this func
-    # This should handle +,-,*,/ with order of operations,
-    # but doesn't need to handle parens.
     expr
     |> String.split(~r/\s+/)
     |> Enum.map(&Practice.Calc.tag_token/1)
     |> Practice.Calc.convert_postfix
     |> Enum.reverse
     |> Practice.Calc.eval()
-
-
-    # Hint:
-    # expr
-    # |> split
-    # |> tag_tokens  (e.g. [+, 1] => [{:op, "+"}, {:num, 1.0}]
-    # |> convert to postfix
-    # |> reverse to prefix
-    # |> evaluate as a stack calculator using pattern matching
   end
 end
