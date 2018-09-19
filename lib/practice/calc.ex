@@ -4,15 +4,81 @@ defmodule Practice.Calc do
     num
   end
 
+  def tag_token(el) do
+    cond do
+      (Enum.member?(["+", "-", "*", "/"], el)) ->
+        {:op, el}
+      true ->
+        {:num, parse_float(el)}
+    end
+  end
+
+  def convert_postfix(l) do
+    convert_postfix(l, [], [])
+  end
+
+  def higher_prec(op1, op2) do
+    case {op1, op2} do
+      {"*", any} ->
+        true
+      {"/", "+"} ->
+        true
+      {"/", "-"} ->
+        true
+      _ ->
+        false
+    end
+  end
+
+  def convert_postfix(l, acc, stack) do
+    if (length(l) > 0) do
+      case hd(l) do
+        nil ->
+          acc ++ stack
+        {:num, n} ->
+          convert_postfix(tl(l), acc ++ [{:num, n}], stack)
+        {:op, op} ->
+          cond do
+            (length(stack) == 0) ->
+              convert_postfix(tl(l), acc, [{:op, op}])
+            (higher_prec(op, elem(hd(stack), 1))) ->
+              convert_postfix(tl(l), acc ++ stack, [{:op, op}])
+            true ->
+              convert_postfix(tl(l), acc, [{:op, op}] ++ stack)
+          end
+      end
+    else
+      acc ++ stack
+    end
+  end
+
+  def eval(l) do
+    tail = tl(l)
+    case hd(l) do
+      {:num, n} ->
+        n
+      {:op, "+"} ->
+       eval([hd(tail)]) + eval(tl(tail))
+      {:op, "-"} ->
+        eval([hd(tail)]) - eval(tl(tail))
+      {:op, "*"} ->
+        eval([hd(tail)]) * eval(tl(tail))
+      {:op, "/"} ->
+        eval([hd(tail)]) / eval(tl(tail))
+    end
+  end
+
   def calc(expr) do
     # TODO Fix this func
     # This should handle +,-,*,/ with order of operations,
     # but doesn't need to handle parens.
     expr
     |> String.split(~r/\s+/)
-    |> hd
-    |> parse_float
-    |> :math.sqrt()
+    |> Enum.map(&Practice.Calc.tag_token/1)
+    |> Practice.Calc.convert_postfix
+    |> Enum.reverse
+    |> Practice.Calc.eval()
+
 
     # Hint:
     # expr
