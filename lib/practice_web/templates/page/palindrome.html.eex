@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="column">
+    <p><%= link "← go back", to: "/" %></p>
+
+    <%= if @pal do %>
+      <h2>It's a Palindrome!</h2>
+    <% else %>
+      <h2>That's not a Palindrome :(</h2>
+    <% end %>
+  </div>
+</div>
+
