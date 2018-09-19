@@ -17,13 +17,12 @@ defmodule PracticeWeb.PageController do
   end
 
   def factor(conn, %{"x" => x}) do
-    y = Practice.factor(x)
+    y = Practice.factor(String.to_integer(x))
     render conn, "factor.html", x: x, y: y
   end
 
   def palindrome(conn, %{"s" => s}) do
-    pal = Practice.palindrome(s)
+    pal = Practice.palindrome?(s)
     render conn, "palindrome.html", pal: pal
   end
-  # TODO: Add a template for palindrome over in lib/*_web/templates/page/??.html.eex
 end
