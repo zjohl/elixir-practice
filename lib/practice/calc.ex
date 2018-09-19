@@ -42,9 +42,9 @@ defmodule Practice.Calc do
             (length(stack) == 0) ->
               convert_postfix(tl(l), acc, [{:op, op}])
             (higher_prec(op, elem(hd(stack), 1))) ->
-              convert_postfix(tl(l), acc ++ stack, [{:op, op}])
-            true ->
               convert_postfix(tl(l), acc, [{:op, op}] ++ stack)
+            true ->
+              convert_postfix(tl(l), acc ++ stack, [{:op, op}])
           end
       end
     else
@@ -52,8 +52,7 @@ defmodule Practice.Calc do
     end
   end
 
-  def eval(l) do
-    IO.inspect l
+  def eval (l) do
     eval(l, [])
   end
 
@@ -61,15 +60,15 @@ defmodule Practice.Calc do
     if (length(l) > 0) do
       case hd(l) do
         {:num, n} ->
-          eval(tl(l), stack ++ [n])
+          eval(tl(l), [n] ++ stack)
         {:op, "+"} ->
-          hd(stack) + hd(tl(stack))
+          eval(tl(l), [hd(tl(stack)) + hd(stack)] ++ tl(tl(stack)))
         {:op, "-"} ->
-          hd(stack) - hd(tl(stack))
+         eval(tl(l), [hd(tl(stack)) - hd(stack)] ++ tl(tl(stack)))
         {:op, "*"} ->
-          hd(stack) * hd(tl(stack))
+          eval(tl(l), [hd(tl(stack)) * hd(stack)] ++ tl(tl(stack)))
         {:op, "/"} ->
-          hd(stack) / hd(tl(stack))
+          eval(tl(l), [hd(tl(stack)) / hd(stack)] ++ tl(tl(stack)))
       end
     else
       hd(stack)
