@@ -1,6 +1,5 @@
-defmodule Practice.factor do
+defmodule Practice.Factor do
 
-  # TODO actually factor this
   def factor(x) do
     factors([], x, 2)
   end
@@ -10,8 +9,8 @@ defmodule Practice.factor do
       (n >= x) ->
         acc ++ [x]
       (rem(x, n) == 0) ->
-        factors(acc ++ [n], x / n, 3)
-      true
+        factors(acc ++ [n], div(x, n), 2)
+      true ->
         factors(acc, x, n + 1)
     end
   end
