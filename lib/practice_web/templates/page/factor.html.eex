@@ -3,6 +3,6 @@
     <p><%= link "← go back", to: "/" %></p>
     <h2>Factors</h2>
 
-    <p>The prime factors of <%= @x %> are <%= IO.inspect @y %></p>
+    <p>The prime factors of <%= @x %> are <%= Enum.join(@y, ", ") %></p>
   </div>
 </div>
